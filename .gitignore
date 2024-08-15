@@ -1,0 +1,59 @@
+# Visual Studio 관련
+.vs/
+*.vcxproj.user
+*.vcxproj.filters
+*.vcxproj.*.user
+*.suo
+*.user
+*.opendb
+*.opensdf
+*.VC.db
+*.VC.VC.opendb
+
+# 빌드 아티팩트
+bin/
+obj/
+Debug/
+Release/
+x64/
+*.log
+*.exe
+*.dll
+*.pdb
+*.ilk
+*.lib
+*.exp
+
+# 중간 파일
+*.obj
+*.pch
+*.idb
+*.ipdb
+*.tlog
+*.lastbuildstate
+*.sdf
+
+# CMake 빌드 폴더
+CMakeFiles/
+CMakeCache.txt
+CMakeScripts/
+Testing/
+cmake_install.cmake
+Makefile
+
+# 기타
+*.class
+*.tmp
+*.csproj.user
+*.DS_Store
+*.vscode/
+
+# OpenGL 관련 임시 파일
+*.ncb
+*.sln.docstates
+
+# 프로젝트 특정 무시할 파일
+# 아래 예시는 필요에 따라 추가
+# *.log
+# *.bak
+# *.old
