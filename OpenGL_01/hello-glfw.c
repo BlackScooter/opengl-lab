@@ -1,5 +1,6 @@
 #include<GL/glew.h>
 #include<GLFW/glfw3.h>
+
 #pragma comment(lib, "glew32.lib")
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glfw3.lib")
@@ -7,6 +8,7 @@
 #include<stdio.h>
 #include<string.h> //for strrchr()
 #include<stdlib.h> 
+#include "./common.c"
 
 const unsigned int WIN_W = 300;
 const unsigned int WIN_H = 300;
@@ -14,20 +16,6 @@ const unsigned int WIN_X = 100;
 const unsigned int WIN_Y = 100;
 
 GLfloat clr[4] = {0.933F, 0.769F, 0.898F, 1.0F};
-
-const char* vertSource =
-"#version 330 core \n\
-in vec4 vertexPos; \n\
-void main(void) { \n\
-	gl_Position = vertexPos; \n\
-}";
-
-const char* fragSource =
-"#version 330 core \n\
-out vec4 FragColor; \n\
-void main(void) { \n\
-	FragColor = vec4(1.0, 0.0, 0.0, 1.0); \n\
-}";
 
 GLuint vert = 0; //vertex shader ID nunmber
 GLuint frag = 0; //fragment shader ID number
@@ -39,27 +27,14 @@ GLfloat vertPos[] = {
 	-0.5F, +0.5F, 0.0F, 1.0F,
 };
 
-const char* getBaseName(const char* progname) {
-#if defined(_WIN32) || defined(_WIN64)
-	const char* ptr = (strrchr(progname, '\\') == NULL) ? progname : (strrchr(progname, '\\') + 1);
-#else // Unix, Linux, MacOS
-	const char* ptr = (strrchr(progname, '/') == NULL) ? progname : (strrchr(progname, '/') + 1);
-#endif
-	
-	//size_t len = strlen(ptr) + 1; // 문자열 길이 + null 문자	 
-	char* buf = (char*)malloc(sizeof(char) * (strlen(ptr) + 1));
-	if (buf == NULL)
-		return NULL;
-
-	strcpy(buf, ptr);
-	if (strrchr(buf, '.') != NULL) { // cut-off ".exe", if exists
-		*(strrchr(buf, '.')) = '\0';
-	}
-	return (const char*)buf;
-}
+const char* vertFileName = "simple-tri.vert";
+const char* fragFileName = "simple-tri.frag";
 
 void initFunc(void)
 {
+	const char* vertSource = loadFile(vertFileName);
+	const char* fragSource = loadFile(fragFileName);
+
 	//vert: vertex shader
 	vert = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vert,1,&vertSource,NULL);
@@ -78,6 +53,10 @@ void initFunc(void)
 
 	//excute it!
 	glUseProgram(prog); 
+
+	//done
+	free((void*) vertSource);
+	free((void*) fragSource);
 
 }
 
@@ -146,7 +125,7 @@ void keyFunc(GLFWwindow* window, int key, int scancode, int action, int mods)
 int main(int argc, char* argv[])
 {
 	const char* basename = getBaseName(argv[0]);
-
+	
 	//Start
 	glfwInit();
 	GLFWwindow* window = glfwCreateWindow(WIN_W, WIN_H, basename, NULL/* glfwGetPrimaryMonitor()*/, NULL);
